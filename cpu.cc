@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include "memory.hh"
 
 typedef union {
     struct{
@@ -62,6 +63,53 @@ uint8_t get_flag(CPU *cpu, uint8_t flag) {
     return (cpu->af.F & flag) != 0;
 }
 
+//declaracao das funcoes opcodes
+void (*opcodes[256]) (CPU *cpu);
+
+
+void op_NOP(CPU *cpu){
+
+}
+void op_LD_BC_d16(CPU *cpu){
+    uint16_t value = read16(cpu->PC);
+    cpu->bc.BC = value;
+}
+void op_LD_BCm_A(CPU *cpu){
+    write8(cpu->bc.BC, cpu->af.A);
+}
+
+void initops(){
+    opcodes[0x00] = op_NOP;
+    opcodes[0x01] = op_LD_BC_d16;
+    opcodes[0x02] = op_LD_BCm_A;
+}
+
+
+//fim opcodes
+
+
+void cicle(CPU *cpu){
+    uint8_t opcode = read8(cpu->PC++);
+    opcodes[opcode](cpu);
+}
+
+
+
+void test_LD_BCm_A() {
+    CPU cpu = {0}; 
+
+    
+    cpu.bc.BC = 0xC000;  
+    cpu.af.A  = 0x42;   
+
+    
+    op_LD_BCm_A(&cpu);
+
+   
+    uint8_t mem_value = read8(0xC000);
+
+    printf("0x42, Memória[0xC000] = 0x%02X\n", mem_value);
+}
 
 int main(){
     CPU cpu = {0};
@@ -74,5 +122,6 @@ int main(){
     set_flag(&cpu, FLAG_Z, true);
     printf("F (com Z ligado) = %02X\n", cpu.af.F); //B4
 
+    test_LD_BCm_A();
     return 0;
 }
