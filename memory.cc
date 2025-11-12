@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
+
 #include "memory.hh"
 
 Memory mem;
@@ -58,4 +59,5 @@ uint16_t read16(uint16_t addr) {
     uint8_t low = read8(addr);
     uint8_t high = read8(addr + 1);
     return (high << 8) | low;
+    
 }
