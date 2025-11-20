@@ -46,6 +46,7 @@ typedef struct{
     uint16_t PC;
     uint16_t SP;
 
+    bool halted;
     bool stop;
 }CPU;
 

@@ -4,7 +4,7 @@
 #include "memory.hh"
 #include "cpu.hh"
 
-// Inicializa toda a memória com zeros
+// mem 0
 void init_mem() {
     memset(mem.rombank0, 0, sizeof(mem.rombank0));
     memset(mem.rombank1, 0, sizeof(mem.rombank1));
@@ -62,14 +62,15 @@ int main(int argc, char **argv) {
     printf("ROM carregada com sucesso!\nIniciando CPU...\n");
 
     //loop
-    for(int ciclo = 0; ciclo < 1000 && !cpu.stop; ciclo++) {
-        printf("Ciclo %d, PC=%04X\n", ciclo, cpu.PC);
-        cicle(&cpu);
-        print_cpu_state(&cpu); 
-    }
+    for (int ciclo = 0; ciclo < 1000 && !cpu.stop; ciclo++) {
 
-    printf("Execução finalizada.\n");
+    uint8_t opcode = read8(cpu.PC);
+
+    printf("Ciclo %d | PC=%04X | OP=%02X\n",
+           ciclo, cpu.PC, opcode);
+
+    cicle(&cpu);   //função que executa o opcode
     print_cpu_state(&cpu);
+}
 
-    return 0;
 }
