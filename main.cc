@@ -29,7 +29,7 @@ void init_cpu(CPU *cpu) {
     cpu->stop = false;
 }
 
-// Imprime estado atual da CPU (útil para debug)
+// debug
 void print_cpu_state(CPU *cpu) {
     printf("PC:%04X SP:%04X AF:%04X BC:%04X DE:%04X HL:%04X\n",
            cpu->PC, cpu->SP, cpu->af.AF, cpu->bc.BC,
